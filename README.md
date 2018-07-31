@@ -7,3 +7,4 @@
 
 1. npm install
 2. node proxy
+3. 默认获取100个代理，需要获取更多修改start函数参数即可
