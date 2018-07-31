@@ -50,7 +50,10 @@ async function check(data) {
                             return res()
                         }
                     }
-                    valid.push(data[i])
+                    if(req.statusCode===200&&body){
+                        valid.push(data[i])
+                    }
+                    
                     if ((--length) === 0) {
                         return res()
                     }
