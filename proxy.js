@@ -23,7 +23,7 @@ async function get(page = 1) {
             const type = tr.eq(5).text() //http,https
             storage.push(type + '://' + ip + ':' + port)
         }
-        console.log('获取数据总数：'+storage.length)
+        console.log('获取数据总数：' + storage.length)
         return storage
 
     } catch (err) {
@@ -33,33 +33,33 @@ async function get(page = 1) {
 
 
 //筛选有效IP  data：数据链接
-async function check(data){
+async function check(data) {
     console.log('开始验证数据:')
-    try{
+    try {
         const valid = []  //有效数据
-        await new Promise((res,rej)=>{
-            let length =data.length
-            for(let i=0;i<data.length;i++){
-                const options={
-                    url:"http://www/baidu.com",
-                    proxy:data[i]
+        await new Promise((res, rej) => {
+            let length = data.length
+            for (let i = 0; i < data.length; i++) {
+                const options = {
+                    url: "http://www/baidu.com",
+                    proxy: data[i]
                 }
-                request.get(options,(err,req,body)=>{
-                    if(err){
-                        if((--length)===0){
+                request.get(options, (err, req, body) => {
+                    if (err) {
+                        if ((--length) === 0) {
                             return res()
                         }
                     }
                     valid.push(data[i])
-                    if((--length)===0){
+                    if ((--length) === 0) {
                         return res()
                     }
                 })
-             }
+            }
         })
-        console.log('有效数据:'+valid.length)
+        console.log('有效数据:' + valid.length)
         return valid
-    }catch(err){
+    } catch (err) {
         console.log(err)
     }
 }
@@ -71,17 +71,18 @@ function saveData(data) {
 }
 
 //num 获取的有效proxy数量
-async function start(num=50) {
-    let storage =[] //存储有效链接
-    let page=1 //当前所在页面
-    while(storage.length<num){
+async function start(num) {
+    let storage = [] //存储有效链接
+    let page = 1 //当前所在页面
+    while (storage.length < num) {
         let data = await get(page++)   //获取链接总数
         data = await check(data) //获取有效链接
-        storage =storage.concat(data)
+        storage = storage.concat(data)
     }
-    console.log('vailProxyTotal:'+storage.length)
+    console.log('vailProxyTotal:' + storage.length)
     saveData(storage)
 
 
 }
-start()
+//获取100个proxy
+start(100)
