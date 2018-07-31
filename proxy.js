@@ -49,8 +49,12 @@ async function check(data) {
                         if ((--length) === 0) {
                             return res()
                         }
+                    }else{
+                        if(body&&req.statusCode===200){
+                           valid.push(data[i])
+                         }
                     }
-                        valid.push(data[i])
+                      
                     if ((--length) === 0) {
                         return res()
                     }
@@ -84,5 +88,5 @@ async function start(num) {
 
 
 }
-//获取100个proxy
-start(100)
+//获取proxy
+start(18)
