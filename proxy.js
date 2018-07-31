@@ -41,7 +41,7 @@ async function check(data) {
             let length = data.length
             for (let i = 0; i < data.length; i++) {
                 const options = {
-                    url: "http://www/baidu.com",
+                    url: "http://www.baidu.com",
                     proxy: data[i]
                 }
                 request.get(options, (err, req, body) => {
