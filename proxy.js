@@ -42,12 +42,7 @@ async function check(data) {
             for (let i = 0; i < data.length; i++) {
                 const options = {
                      url: "http://www.baidu.com",
-                     headers: {
-                        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36'
-                     },
-                    json:true,
                     proxy: data[i],
-                    timeout:20000
                 }
                 request.get(options, (err, req, body) => {
                     if (err) {
