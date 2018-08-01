@@ -98,4 +98,4 @@ async function start(num) {
 
 }
 //获取proxy
-start(18)
+start(5)
