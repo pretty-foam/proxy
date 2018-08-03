@@ -85,7 +85,8 @@ async function start(num) {
     let page = 1 //当前所在页面
     let data = [] //获取链接总数
     while (storage.length < num) {
-        while (data.length < 1000) {
+        //控制并发，高于1000易封IP
+        while (data.length < 700) {
             let currentData = await get(page++) //当前链接
             data = data.concat(currentData)
         }
