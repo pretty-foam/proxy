@@ -1,7 +1,7 @@
 const cheerio = require('cheerio')
-const promise = require('bluebird')
+const Promise = require('bluebird')
 const fs = require('fs')
-const request = promise.promisifyAll(require('request'))
+const request = Promise.promisifyAll(require('request'))
 
 //获取IP地址 page：当前所在页
 async function get(page = 1) {
@@ -23,7 +23,7 @@ async function get(page = 1) {
             const type = tr.eq(5).text() //http,https
             storage.push(type + '://' + ip + ':' + port)
         }
-        console.log('获取数据总数：' + storage.length)
+
         return storage
 
     } catch (err) {
@@ -34,35 +34,36 @@ async function get(page = 1) {
 
 //筛选有效IP  data：数据链接
 async function check(data) {
-    console.log('开始验证数据:')
+    console.log('获取页面链接数量：' + data.length)
+    console.log('开始验证数据')
     try {
-        const valid = []  //有效数据
-        await new Promise((res, rej) => {
-            let length = data.length
-            for (let i = 0; i < data.length; i++) {
-                const options = {
-                     url: "http://www.baidu.com",
-                    proxy: data[i],
+        let valid = [] //有效数据
+        //对每一个请求进行Promise包装
+        const items = data.map(value => new Promise((resolve, reject) => {
+            const options = {
+                url: "http://www.baidu.com",
+                proxy: value,
+                timeout: 5000
+            }
+            request.get(options, (err, res, body) => {
+                if (!err && res.statusCode === 200) {
+                    return resolve(body)
+                } else {
+                    return resolve(false)
                 }
-                request.get(options, (err, req, body) => {
-                    if (err) {
-                        if ((--length) === 0) {
-                            return res()
-                        }
-                    }else{
-                       if(body&&req.statusCode===200){
-                        const $ = cheerio.load(body)
-                        const title = $('title').text() //百度title
-                        if(title==='百度一下，你就知道'){
-                            valid.push(data[i])
-                        }
-                    }
-                    }
-                      
-                    if ((--length) === 0) {
-                        return res()
-                    }
-                })
+            })
+
+        }))
+        //验证网页内容,获取网页
+        const bodys = await Promise.all(items)
+        //筛选有效代理
+        bodys.forEach((val, index) => {
+            if (val) {
+                const $ = cheerio.load(val)
+                const title = $('title').text()
+                if (title === "百度一下，你就知道") {
+                    valid.push(data[index])
+                }
             }
         })
         console.log('currentVaild:' + valid.length)
@@ -82,16 +83,20 @@ function saveData(data) {
 async function start(num) {
     let storage = [] //存储有效链接
     let page = 1 //当前所在页面
+    let data = [] //获取链接总数
     while (storage.length < num) {
-        let data = await get(page++)   //获取链接总数
+        while (data.length < 1000) {
+            let currentData = await get(page++) //当前链接
+            data = data.concat(currentData)
+        }
         data = await check(data) //获取有效链接
         storage = storage.concat(data)
         console.log('vaildProxyTotal:' + storage.length)
     }
-   
+
     saveData(storage)
 
 
 }
 //获取proxy
-start(5)
+start(20)
