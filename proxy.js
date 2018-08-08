@@ -38,8 +38,8 @@ async function check(data) {
     console.log('开始验证数据')
     try {
         let valid = [] //有效数据
-        //对每一个请求进行Promise包装
-        const items = data.map(value => new Promise((resolve, reject) => {
+        //对每一个请求进行Promise包装,验证网页内容,获取网页
+        const bodys = await Promise.map(data, value => new Promise((resolve, reject) => {
             const options = {
                 url: "http://www.baidu.com",
                 proxy: value,
@@ -54,8 +54,6 @@ async function check(data) {
             })
 
         }))
-        //验证网页内容,获取网页
-        const bodys = await Promise.all(items)
         //筛选有效代理
         bodys.forEach((val, index) => {
             if (val) {
@@ -94,10 +92,7 @@ async function start(num) {
         storage = storage.concat(data)
         console.log('vaildProxyTotal:' + storage.length)
     }
-
     saveData(storage)
-
-
 }
 //获取proxy
 start(20)
