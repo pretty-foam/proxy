@@ -73,18 +73,25 @@ async function check(data) {
 
 //保存数据
 function saveData(data) {
-    fs.writeFileSync("proxy.json", JSON.stringify(data));
-    console.log("Save Success!");
+    const currentPath = process.cwd()+'/proxy.json'
+    fs.writeFileSync(currentPath, JSON.stringify(data));
+    console.log("Save Success At:"+currentPath);
 }
 
-//num 获取的有效proxy数量
-async function start(num) {
+/**
+ * 获取高匿 http代理
+ * @param {Number} num 获取的有效proxy数量
+ * @param {Boolean} isSave 是否保存本地Json格式数据
+ * @returns {Array} 高匿代理IP数组
+ */
+async function start(num,isSave=false) {
+    
     let storage = [] //存储有效链接
     let page = 1 //当前所在页面
     let data = [] //获取链接总数
     while (storage.length < num) {
         //控制并发，高于300易拒绝访问
-        while (data.length < 200) {
+        while (data.length < 155) {
             let currentData = await get(page++) //当前链接
             data = data.concat(currentData)
         }
@@ -92,7 +99,8 @@ async function start(num) {
         storage = storage.concat(data)
         console.log('vaildProxyTotal:' + storage.length)
     }
-    saveData(storage)
+    isSave?saveData(storage):null
+    return data
 }
 //获取proxy
-start(10)
+module.exports= start

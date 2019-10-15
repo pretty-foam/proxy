@@ -1,10 +1,13 @@
 {
-  "name": "proxy",
+  "name": "getting-agent",
   "version": "1.0.0",
-  "description": "",
+  "description": "Getting high-anonymity HTTP proxy ",
   "main": "proxy.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "gat": "./index.js"
   },
   "author": "",
   "license": "ISC",
