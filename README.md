@@ -7,14 +7,19 @@ Getting HTTP High Anonymity Proxy
 
 ### The first way
 
-
+```bash
 1. npm i  getting-agent -g
 2. gat start  10      (10:Number of proxy IP acquired)
 
+```
+
 ### The second way
 
+```bash
 
 1. npm i getting-agent
+
+```
 
 ```javascript
 
@@ -35,12 +40,15 @@ const gat = require('getting-agent');
 
 ### 第一种方式
 
+```bash
 1. npm i  getting-agent -g
 2. gat start  10      (10:获取的代理IP数量)
-
+```
 ### 第二种方式
 
+```bash
 1. npm i getting-agent
+```
 
 ```javascript
 

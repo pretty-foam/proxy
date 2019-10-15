@@ -1,19 +1,27 @@
 {
   "name": "getting-agent",
-  "version": "1.0.0",
-  "description": "Getting high-anonymity HTTP proxy ",
-  "main": "proxy.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "version": "1.0.3",
+  "description": "Getting HTTP High Anonymity Proxy",
+  "main": "./src/proxy.js",
   "bin": {
     "gat": "./index.js"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "bluebird": "^3.5.1",
     "cheerio": "^1.0.0-rc.2",
     "request": "^2.87.0"
-  }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pretty-foam/proxy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pretty-foam/proxy/issues"
+  },
+  "homepage": "https://github.com/pretty-foam/proxy#readme"
 }
